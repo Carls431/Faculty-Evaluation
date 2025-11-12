@@ -1,0 +1,13 @@
+Faculty ID: 1
+Academic ID: 3
+Total Students Query: SELECT COUNT(DISTINCT sl.id) as total 
+								FROM student_list sl 
+								INNER JOIN restriction_list rl ON sl.class_id = rl.class_id 
+								WHERE rl.faculty_id = 1 AND rl.academic_id = 3
+Total Students Result: 9
+Evaluated Query: SELECT COUNT(DISTINCT el.student_id) as evaluated 
+							FROM evaluation_list el 
+							WHERE el.faculty_id = 1 AND el.academic_id = 3
+Evaluated Result: 6
+Pending: 3
+Completion Rate: 66.7

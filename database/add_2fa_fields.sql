@@ -1,0 +1,3 @@
+ALTER TABLE `users`
+ADD COLUMN `secret_key` VARCHAR(32) DEFAULT NULL,
+ADD COLUMN `is_2fa_enabled` TINYINT(1) DEFAULT 0;

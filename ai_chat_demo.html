@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat Assistant Demo - Faculty Evaluation System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        
+        .demo-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .demo-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .demo-header h1 {
+            color: #800000;
+            margin-bottom: 10px;
+        }
+        
+        .demo-header p {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #800000;
+        }
+        
+        .feature-card h3 {
+            color: #800000;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .instruction {
+            background: linear-gradient(135deg, #800000, #a52a2a);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .instruction h2 {
+            margin-top: 0;
+        }
+        
+        /* Include the AI Chat Assistant styles */
+        .ai-chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .chat-toggle-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #800000, #a52a2a, #8b0000);
+            border: none;
+            box-shadow: 0 4px 20px rgba(139, 0, 0, 0.3);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chat-toggle-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(139, 0, 0, 0.4);
+        }
+
+        .chat-toggle-btn i {
+            color: white;
+            font-size: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .chat-toggle-btn.active i.fa-comments {
+            transform: rotate(180deg);
+            opacity: 0;
+        }
+
+        .chat-toggle-btn.active i.fa-times {
+            transform: rotate(0deg);
+            opacity: 1;
+        }
+
+        .chat-toggle-btn i.fa-times {
+            position: absolute;
+            transform: rotate(-180deg);
+            opacity: 0;
+        }
+
+        .chat-notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            background: #ff4757;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: white;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        .chat-container {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 350px;
+            height: 500px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .chat-container.active {
+            display: flex;
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #800000, #a52a2a);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .chat-info h4 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .chat-info p {
+            margin: 0;
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .message.ai .message-avatar {
+            background: linear-gradient(135deg, #800000, #a52a2a);
+            color: white;
+        }
+
+        .message.user .message-avatar {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .message.ai .message-content {
+            background: white;
+            color: #333;
+            border-bottom-left-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, #800000, #a52a2a);
+            color: white;
+            border-bottom-right-radius: 6px;
+        }
+
+        .chat-input-container {
+            padding: 15px 20px;
+            background: white;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .chat-input {
+            flex: 1;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            padding: 10px 15px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .chat-input:focus {
+            border-color: #800000;
+        }
+
+        .chat-send-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #800000, #a52a2a);
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .chat-send-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .typing-indicator {
+            display: none;
+            padding: 10px 16px;
+            background: white;
+            border-radius: 18px;
+            border-bottom-left-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            max-width: 70%;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dots span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #800000;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.5;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+
+        .quick-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .suggestion-btn {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 15px;
+            padding: 6px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .suggestion-btn:hover {
+            background: #800000;
+            color: white;
+            border-color: #800000;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .chat-container {
+                width: 300px;
+                height: 450px;
+                bottom: 70px;
+                right: -10px;
+            }
+            
+            .ai-chat-widget {
+                bottom: 15px;
+                right: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .chat-container {
+                width: 95vw;
+                height: 80vh;
+                max-height: 600px;
+                bottom: 80px;
+                right: 2.5vw;
+                left: 2.5vw;
+                border-radius: 15px;
+                position: fixed;
+            }
+            
+            .chat-popup-notification {
+                width: 85vw;
+                bottom: 70px;
+                right: 7.5vw;
+                left: 7.5vw;
+            }
+            
+            .popup-message {
+                font-size: 13px;
+            }
+            
+            .chat-header {
+                padding: 15px 20px;
+            }
+            
+            .chat-messages {
+                padding: 15px;
+            }
+            
+            .chat-input-container {
+                padding: 12px 15px 15px;
+            }
+            
+            .chat-toggle-btn {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .chat-toggle-btn i {
+                font-size: 20px;
+            }
+        }
+
+        /* Scrollbar styling */
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #800000;
+            border-radius: 3px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: #a52a2a;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1><i class="fas fa-robot"></i> AI Chat Assistant Demo</h1>
+            <p>Interactive help system for Faculty Evaluation System students</p>
+        </div>
+        
+        <div class="instruction">
+            <h2><i class="fas fa-hand-pointer"></i> Try the Chat Assistant!</h2>
+            <p>A helpful popup will appear every 15 seconds and auto-disappear after 5 seconds, or click the maroon chat button in the bottom-right corner to start chatting with EvalBot!</p>
+        </div>
+        
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3><i class="fas fa-question-circle"></i> Smart Help</h3>
+                <p>Get instant answers to evaluation questions, rating explanations, and step-by-step guidance.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3><i class="fas fa-comments"></i> Interactive Chat</h3>
+                <p>Natural conversation interface with quick suggestion buttons for common questions.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3><i class="fas fa-tools"></i> Technical Support</h3>
+                <p>Troubleshooting help for common technical issues and browser problems.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3><i class="fas fa-shield-alt"></i> Student-Only</h3>
+                <p>Appears only on student interface to avoid cluttering admin and faculty views.</p>
+            </div>
+        </div>
+        
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 4px solid #28a745;">
+            <h3 style="color: #28a745; margin-top: 0;"><i class="fas fa-lightbulb"></i> Sample Questions to Try:</h3>
+            <ul>
+                <li>"How do I evaluate a teacher?"</li>
+                <li>"What do the ratings mean?"</li>
+                <li>"Can I change my evaluation?"</li>
+                <li>"Help with technical issues"</li>
+                <li>"Are evaluations anonymous?"</li>
+                <li>"When is the deadline?"</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- AI Chat Assistant Widget -->
+    <div class="ai-chat-widget">
+        <!-- Proactive Popup Notification -->
+        <div class="chat-popup-notification" id="chatPopup">
+            <div class="popup-header">
+                <div class="popup-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h4 class="popup-title">Need Help?</h4>
+                <button class="popup-close" id="popupClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="popup-message">
+                Don't know how to evaluate? Feel free to ask me anything about the evaluation process!
+            </div>
+            <button class="popup-action" id="popupAction">
+                <i class="fas fa-comments"></i> Ask EvalBot
+            </button>
+        </div>
+        
+        <!-- Chat Toggle Button -->
+        <button class="chat-toggle-btn" id="chatToggle">
+            <i class="fas fa-comments"></i>
+            <i class="fas fa-times"></i>
+            <span class="chat-notification-badge" id="notificationBadge">!</span>
+        </button>
+        
+        <!-- Chat Container -->
+        <div class="chat-container" id="chatContainer">
+            <!-- Chat Header -->
+            <div class="chat-header">
+                <div class="chat-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="chat-info">
+                    <h4>EvalBot Assistant</h4>
+                    <p>Here to help with your evaluations</p>
+                </div>
+            </div>
+            
+            <!-- Chat Messages -->
+            <div class="chat-messages" id="chatMessages">
+                <div class="message ai">
+                    <div class="message-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="message-content">
+                        Hi! I'm EvalBot, your evaluation assistant. I'm here to help you with:
+                        <div class="quick-suggestions">
+                            <button class="suggestion-btn" onclick="sendQuickMessage('How do I evaluate a teacher?')">How to evaluate?</button>
+                            <button class="suggestion-btn" onclick="sendQuickMessage('What do the ratings mean?')">Rating meanings</button>
+                            <button class="suggestion-btn" onclick="sendQuickMessage('Can I change my evaluation?')">Edit evaluation</button>
+                            <button class="suggestion-btn" onclick="sendQuickMessage('Help with technical issues')">Technical help</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Typing Indicator -->
+                <div class="message ai" id="typingIndicator">
+                    <div class="message-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="typing-indicator">
+                        <div class="typing-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Chat Input -->
+            <div class="chat-input-container">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Ask me anything about evaluations..." maxlength="500">
+                <button class="chat-send-btn" id="chatSend">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // AI Chat Assistant JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatToggle = document.getElementById('chatToggle');
+            const chatContainer = document.getElementById('chatContainer');
+            const chatMessages = document.getElementById('chatMessages');
+            const chatInput = document.getElementById('chatInput');
+            const chatSend = document.getElementById('chatSend');
+            const typingIndicator = document.getElementById('typingIndicator');
+            const chatPopup = document.getElementById('chatPopup');
+            const popupClose = document.getElementById('popupClose');
+            const popupAction = document.getElementById('popupAction');
+            const notificationBadge = document.getElementById('notificationBadge');
+            
+            let isOpen = false;
+            let popupShown = false;
+            
+            // Show proactive popup after 10 seconds
+            setTimeout(function() {
+                if (!popupShown && !isOpen) {
+                    showProactivePopup();
+                }
+            }, 10000);
+            
+            // Show proactive popup function
+            function showProactivePopup() {
+                chatPopup.classList.add('show');
+                notificationBadge.style.display = 'flex';
+                popupShown = true;
+            }
+            
+            // Hide proactive popup function
+            function hideProactivePopup() {
+                chatPopup.classList.remove('show');
+                notificationBadge.style.display = 'none';
+            }
+            
+            // Close popup button
+            popupClose.addEventListener('click', function() {
+                hideProactivePopup();
+            });
+            
+            // Popup action button - open chat
+            popupAction.addEventListener('click', function() {
+                hideProactivePopup();
+                openChat();
+                // Send a welcome message
+                setTimeout(() => {
+                    addMessage("Hi! I see you might need help with evaluations. What would you like to know?", 'ai');
+                }, 500);
+            });
+            
+            // Function to open chat
+            function openChat() {
+                isOpen = true;
+                chatToggle.classList.add('active');
+                chatContainer.classList.add('active');
+                chatInput.focus();
+                hideProactivePopup();
+            }
+            
+            // Toggle chat
+            chatToggle.addEventListener('click', function() {
+                isOpen = !isOpen;
+                chatToggle.classList.toggle('active', isOpen);
+                chatContainer.classList.toggle('active', isOpen);
+                
+                if (isOpen) {
+                    chatInput.focus();
+                    hideProactivePopup();
+                }
+            });
+            
+            // Send message
+            function sendMessage() {
+                const message = chatInput.value.trim();
+                if (!message) return;
+                
+                // Add user message
+                addMessage(message, 'user');
+                chatInput.value = '';
+                
+                // Show typing indicator
+                showTyping();
+                
+                // Simulate AI response
+                setTimeout(() => {
+                    hideTyping();
+                    const response = getAIResponse(message);
+                    addMessage(response, 'ai');
+                }, 1000 + Math.random() * 2000);
+            }
+            
+            // Add message to chat
+            function addMessage(content, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}`;
+                
+                const avatar = document.createElement('div');
+                avatar.className = 'message-avatar';
+                avatar.innerHTML = sender === 'ai' ? '<i class="fas fa-robot"></i>' : '<i class="fas fa-user"></i>';
+                
+                const messageContent = document.createElement('div');
+                messageContent.className = 'message-content';
+                messageContent.innerHTML = content;
+                
+                messageDiv.appendChild(avatar);
+                messageDiv.appendChild(messageContent);
+                
+                chatMessages.insertBefore(messageDiv, typingIndicator);
+                scrollToBottom();
+            }
+            
+            // Show typing indicator
+            function showTyping() {
+                typingIndicator.style.display = 'flex';
+                scrollToBottom();
+            }
+            
+            // Hide typing indicator
+            function hideTyping() {
+                typingIndicator.style.display = 'none';
+            }
+            
+            // Scroll to bottom
+            function scrollToBottom() {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Event listeners
+            chatSend.addEventListener('click', sendMessage);
+            chatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            // Quick message function
+            window.sendQuickMessage = function(message) {
+                chatInput.value = message;
+                sendMessage();
+            };
+            
+            // AI Response Generator
+            function getAIResponse(message) {
+                const lowerMessage = message.toLowerCase();
+                
+                // Evaluation help responses
+                if (lowerMessage.includes('evaluate') || lowerMessage.includes('how to')) {
+                    return `To evaluate a teacher:<br>
+                            1. Select the teacher from the list<br>
+                            2. Rate each criteria from 1-5 (1=Poor, 5=Excellent)<br>
+                            3. Add optional comments<br>
+                            4. Submit your evaluation<br><br>
+                            <strong>Remember:</strong> Be honest and constructive in your feedback!`;
+                }
+                
+                if (lowerMessage.includes('rating') || lowerMessage.includes('mean')) {
+                    return `<strong>Rating Scale:</strong><br>
+                            • <strong>5 - Excellent:</strong> Outstanding performance<br>
+                            • <strong>4 - Very Good:</strong> Above average<br>
+                            • <strong>3 - Good:</strong> Satisfactory<br>
+                            • <strong>2 - Fair:</strong> Needs improvement<br>
+                            • <strong>1 - Poor:</strong> Unsatisfactory<br><br>
+                            Choose the rating that best reflects your experience.`;
+                }
+                
+                if (lowerMessage.includes('change') || lowerMessage.includes('edit') || lowerMessage.includes('modify')) {
+                    return `Once submitted, evaluations typically cannot be changed to ensure fairness. However, if you made an error:<br><br>
+                            1. Contact your teacher or administrator immediately<br>
+                            2. Explain the situation<br>
+                            3. They may be able to help reset your evaluation<br><br>
+                            Always double-check before submitting!`;
+                }
+                
+                if (lowerMessage.includes('technical') || lowerMessage.includes('problem') || lowerMessage.includes('error')) {
+                    return `For technical issues:<br>
+                            1. <strong>Refresh the page</strong> and try again<br>
+                            2. <strong>Clear browser cache</strong> (Ctrl+F5)<br>
+                            3. <strong>Try a different browser</strong><br>
+                            4. <strong>Check internet connection</strong><br><br>
+                            Still having issues? Contact your IT administrator or teacher for help.`;
+                }
+                
+                if (lowerMessage.includes('anonymous') || lowerMessage.includes('private')) {
+                    return `Your evaluations are <strong>confidential</strong>. Teachers cannot see who submitted specific evaluations - they only see the overall results and anonymous feedback.<br><br>
+                            This ensures you can give honest feedback without worry!`;
+                }
+                
+                if (lowerMessage.includes('deadline') || lowerMessage.includes('when') || lowerMessage.includes('time')) {
+                    return `Evaluation deadlines are set by your school administration. You can usually see the deadline on your evaluation page.<br><br>
+                            <strong>Tip:</strong> Don't wait until the last minute - complete your evaluations early!`;
+                }
+                
+                if (lowerMessage.includes('comment') || lowerMessage.includes('feedback')) {
+                    return `When writing comments:<br>
+                            • Be <strong>specific</strong> and constructive<br>
+                            • Focus on teaching methods and classroom experience<br>
+                            • Use respectful language<br>
+                            • Mention both strengths and areas for improvement<br><br>
+                            Good feedback helps teachers improve their teaching!`;
+                }
+                
+                if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
+                    return `Hello! 👋 I'm here to help you with the faculty evaluation process. What would you like to know?<br><br>
+                            You can ask me about ratings, how to evaluate, technical issues, or anything else related to evaluations!`;
+                }
+                
+                if (lowerMessage.includes('thank') || lowerMessage.includes('thanks')) {
+                    return `You're welcome! 😊 I'm always here to help. If you have any other questions about evaluations, just ask!<br><br>
+                            Good luck with your evaluations!`;
+                }
+                
+                // Default response
+                return `I understand you're asking about "${message}". Here are some things I can help you with:<br><br>
+                        • <strong>How to evaluate teachers</strong><br>
+                        • <strong>Understanding rating scales</strong><br>
+                        • <strong>Technical troubleshooting</strong><br>
+                        • <strong>Evaluation policies</strong><br>
+                        • <strong>Feedback and comments</strong><br><br>
+                        Could you be more specific about what you'd like to know?`;
+            }
+        });
+    </script>
+</body>
+</html>

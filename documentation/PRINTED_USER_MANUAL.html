@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Evaluation System - Printed User Manual</title>
+    <style>
+        /* Print-optimized styles */
+        @page {
+            size: A4;
+            margin: 1in;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 11pt;
+            line-height: 1.4;
+            color: #000;
+            background: white;
+        }
+
+        .cover-page {
+            text-align: center;
+            page-break-after: always;
+            padding-top: 2in;
+        }
+
+        .cover-title {
+            font-size: 24pt;
+            font-weight: bold;
+            color: #800000;
+            margin-bottom: 0.5in;
+        }
+
+        .cover-subtitle {
+            font-size: 18pt;
+            color: #333;
+            margin-bottom: 1in;
+        }
+
+        .cover-info {
+            font-size: 12pt;
+            line-height: 1.6;
+        }
+
+        .toc {
+            page-break-after: always;
+        }
+
+        .toc-title {
+            font-size: 18pt;
+            font-weight: bold;
+            color: #800000;
+            margin-bottom: 0.5in;
+            border-bottom: 2px solid #800000;
+            padding-bottom: 10pt;
+        }
+
+        .toc-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 8pt 0;
+            padding: 4pt 0;
+        }
+
+        .toc-item.level-1 {
+            font-weight: bold;
+            margin-top: 15pt;
+        }
+
+        .toc-item.level-2 {
+            margin-left: 20pt;
+        }
+
+        .toc-dots {
+            flex: 1;
+            border-bottom: 1pt dotted #666;
+            margin: 0 10pt;
+            height: 1em;
+        }
+
+        .section {
+            page-break-before: always;
+        }
+
+        .section-title {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #800000;
+            margin-bottom: 20pt;
+            border-bottom: 2px solid #800000;
+            padding-bottom: 8pt;
+        }
+
+        .subsection-title {
+            font-size: 14pt;
+            font-weight: bold;
+            color: #333;
+            margin: 20pt 0 10pt 0;
+        }
+
+        .step-box {
+            border: 1pt solid #800000;
+            background: #f9f9f9;
+            padding: 12pt;
+            margin: 10pt 0;
+            border-radius: 4pt;
+        }
+
+        .step-number {
+            background: #800000;
+            color: white;
+            width: 20pt;
+            height: 20pt;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10pt;
+            font-size: 10pt;
+        }
+
+        .warning-box {
+            border: 2pt solid #ff6b35;
+            background: #fff5f5;
+            padding: 12pt;
+            margin: 15pt 0;
+        }
+
+        .info-box {
+            border: 2pt solid #0066cc;
+            background: #f0f8ff;
+            padding: 12pt;
+            margin: 15pt 0;
+        }
+
+        .code-block {
+            background: #f5f5f5;
+            border: 1pt solid #ccc;
+            padding: 8pt;
+            font-family: 'Courier New', monospace;
+            font-size: 9pt;
+            margin: 10pt 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15pt 0;
+        }
+
+        th, td {
+            border: 1pt solid #333;
+            padding: 8pt;
+            text-align: left;
+        }
+
+        th {
+            background: #800000;
+            color: white;
+            font-weight: bold;
+        }
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist li {
+            margin: 8pt 0;
+            padding-left: 25pt;
+            position: relative;
+        }
+
+        .checklist li:before {
+            content: "☐";
+            position: absolute;
+            left: 0;
+            font-size: 12pt;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0.5in;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 9pt;
+            color: #666;
+        }
+
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cover Page -->
+    <div class="cover-page">
+        <div class="cover-title">Faculty Evaluation System</div>
+        <div class="cover-subtitle">Complete User Manual</div>
+        
+        <div style="margin: 1in 0;">
+            <div style="width: 200pt; height: 150pt; border: 2pt solid #800000; margin: 0 auto; display: flex; align-items: center; justify-content: center; background: #f8f6f0;">
+                <div style="text-align: center; color: #800000;">
+                    <div style="font-size: 48pt;">📖</div>
+                    <div style="font-size: 12pt; margin-top: 10pt;">System Documentation</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cover-info">
+            <strong>Version:</strong> 1.0<br>
+            <strong>Date:</strong> <?php echo date('F j, Y'); ?><br>
+            <strong>System:</strong> Faculty Evaluation System<br>
+            <strong>Institution:</strong> [Your Institution Name]<br><br>
+            
+            <div style="margin-top: 0.5in; font-size: 10pt; color: #666;">
+                This manual contains complete instructions for operating,<br>
+                maintaining, and troubleshooting the Faculty Evaluation System.
+            </div>
+        </div>
+    </div>
+
+    <!-- Table of Contents -->
+    <div class="toc">
+        <div class="toc-title">Table of Contents</div>
+        
+        <div class="toc-item level-1">
+            <span>1. Front Page / Title Page</span>
+            <span class="toc-dots"></span>
+            <span>1</span>
+        </div>
+        
+        <div class="toc-item level-1">
+            <span>2. Table of Contents</span>
+            <span class="toc-dots"></span>
+            <span>2</span>
+        </div>
+        
+        <div class="toc-item level-1">
+            <span>3. Glossary</span>
+            <span class="toc-dots"></span>
+            <span>3</span>
+        </div>
+        
+        <div class="toc-item level-1">
+            <span>4. Introduction / Overview</span>
+            <span class="toc-dots"></span>
+            <span>4</span>
+        </div>
+        <div class="toc-item level-2">
+            <span>4.1 About the System</span>
+            <span class="toc-dots"></span>
+            <span>4</span>
+        </div>
+        <div class="toc-item level-2">
+            <span>4.2 System Overview</span>
+            <span class="toc-dots"></span>
+            <span>5</span>
+        </div>
+        <div class="toc-item level-2">
+            <span>4.3 Scope</span>
+            <span class="toc-dots"></span>
+            <span>6</span>
+        </div>
+        
+        <div class="toc-item level-1">
+            <span>5. Installation Instructions</span>
+            <span class="toc-dots"></span>
+            <span>7</span>
+        </div>
+        <div class="toc-item level-2">
+            <span>5.1 System Requirements</span>
+            <span class="toc-dots"></span>
+            <span>7</span>
+        </div>
+        <div class="toc-item level-2">
+            <span>5.2 Installation Steps</span>
+            <span class="toc-dots"></span>
+            <span>8</span>
+        </div>
+        
+        <div class="toc-item level-1">
+            <span>6. User Interface Overview</span>
+            <span class="toc-dots"></span>
+            <span>10</span>
+        </div>
+        
+        <div class="toc-item level-1">
+            <span>7. How-To Guides</span>
+            <span class="toc-dots"></span>
+            <span>12</span>
+        </div>
+        <div class="toc-item level-2">
+            <span>7.1 Administrator Guide</span>
+            <span class="toc-dots"></span>
+            <span>12</span>
+        </div>
+        <div class="toc-item level-2">
+            <span>7.2 Faculty Guide</span>
+            <span class="toc-dots"></span>
+            <span>18</span>
+        </div>
+        <div class="toc-item level-2">
+            <span>7.3 Student Guide</span>
+            <span class="toc-dots"></span>
+            <span>20</span>
+        </div>
+        
+        <div class="toc-item level-1">
+            <span>8. Troubleshooting Section</span>
+            <span class="toc-dots"></span>
+            <span>22</span>
+        </div>
+        
+        <div class="toc-item level-1">
+            <span>9. Contact Information Support</span>
+            <span class="toc-dots"></span>
+            <span>25</span>
+        </div>
+        
+        <div class="toc-item level-1">
+            <span>Appendices</span>
+            <span class="toc-dots"></span>
+            <span>26</span>
+        </div>
+        <div class="toc-item level-2">
+            <span>A. Quick Reference Card</span>
+            <span class="toc-dots"></span>
+            <span>26</span>
+        </div>
+        <div class="toc-item level-2">
+            <span>B. Emergency Procedures</span>
+            <span class="toc-dots"></span>
+            <span>27</span>
+        </div>
+        <div class="toc-item level-2">
+            <span>C. System Specifications</span>
+            <span class="toc-dots"></span>
+            <span>28</span>
+        </div>
+    </div>
+
+    <!-- Glossary -->
+    <div class="section">
+        <div class="section-title">3. Glossary</div>
+        
+        <table>
+            <tr>
+                <th style="width: 25%;">Term</th>
+                <th>Definition</th>
+            </tr>
+            <tr>
+                <td><strong>Admin</strong></td>
+                <td>System administrator with full access to all features and settings</td>
+            </tr>
+            <tr>
+                <td><strong>Academic Year</strong></td>
+                <td>The yearly period during which evaluations are conducted</td>
+            </tr>
+            <tr>
+                <td><strong>Dashboard</strong></td>
+                <td>Main screen showing system statistics and overview</td>
+            </tr>
+            <tr>
+                <td><strong>Evaluation</strong></td>
+                <td>Student assessment of faculty performance</td>
+            </tr>
+            <tr>
+                <td><strong>Faculty</strong></td>
+                <td>Teachers or instructors being evaluated</td>
+            </tr>
+            <tr>
+                <td><strong>Quarter</strong></td>
+                <td>Three-month period within an academic year (1st, 2nd, 3rd, 4th)</td>
+            </tr>
+            <tr>
+                <td><strong>Report</strong></td>
+                <td>Generated document showing evaluation results and statistics</td>
+            </tr>
+            <tr>
+                <td><strong>Student</strong></td>
+                <td>Users who submit evaluations for their teachers</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Introduction / Overview -->
+    <div class="section">
+        <div class="section-title">4. Introduction / Overview</div>
+        
+        <div class="subsection-title">4.1 About the System</div>
+        <p>The Faculty Evaluation System is a comprehensive web-based application designed to streamline the process of evaluating faculty performance in educational institutions. It provides a secure, user-friendly platform for students to evaluate their teachers and for administrators to generate detailed performance reports.</p>
+        
+        <div class="info-box">
+            <strong>Purpose:</strong> To provide an efficient, transparent, and comprehensive method for evaluating faculty performance and improving educational quality.
+        </div>
+        
+        <div class="subsection-title">4.2 System Overview</div>
+        <p>The system consists of Two main user portals:</p>
+        
+        <div class="step-box">
+            <div style="display: flex; align-items: center; margin-bottom: 10pt;">
+                <span class="step-number">1</span>
+                <strong>Administrator Portal</strong>
+            </div>
+            <ul>
+                <li>Complete system management</li>
+                <li>User account management</li>
+                <li>Report generation and analytics</li>
+                <li>System configuration</li>
+            </ul>
+        </div>
+        
+        <div class="step-box">
+            <div style="display: flex; align-items: center; margin-bottom: 10pt;">
+                <span class="step-number">2</span>
+                <strong>Student Portal</strong>
+            </div>
+            <ul>
+                <li>Submit faculty evaluations</li>
+                <li>Provide constructive feedback</li>
+                <li>Rate teaching performance</li>
+                <li>View evaluation history</li>
+            </ul>
+        </div>
+        
+        <div class="subsection-title">4.3 Scope</div>
+        <p>This manual covers:</p>
+        <ul>
+            <li>Complete system installation and setup</li>
+            <li>User account management and permissions</li>
+            <li>Daily operations for all user types</li>
+            <li>Report generation and data analysis</li>
+            <li>System maintenance and troubleshooting</li>
+            <li>Emergency procedures and recovery</li>
+        </ul>
+    </div>
+
+    <!-- Installation Instructions -->
+    <div class="section">
+        <div class="section-title">5. Installation Instructions</div>
+        
+        <div class="subsection-title">5.1 System Requirements</div>
+        
+        <table>
+            <tr>
+                <th>Component</th>
+                <th>Minimum Requirement</th>
+                <th>Recommended</th>
+            </tr>
+            <tr>
+                <td>Web Server</td>
+                <td>Apache 2.4+</td>
+                <td>Apache 2.4+ with mod_rewrite</td>
+            </tr>
+            <tr>
+                <td>PHP</td>
+                <td>PHP 7.4</td>
+                <td>PHP 8.0+</td>
+            </tr>
+            <tr>
+                <td>Database</td>
+                <td>MySQL 5.7</td>
+                <td>MySQL 8.0+ or MariaDB 10.4+</td>
+            </tr>
+            <tr>
+                <td>Memory</td>
+                <td>512MB RAM</td>
+                <td>1GB+ RAM</td>
+            </tr>
+            <tr>
+                <td>Storage</td>
+                <td>100MB</td>
+                <td>500MB+</td>
+            </tr>
+            <tr>
+                <td>Browser</td>
+                <td>Modern browsers</td>
+                <td>Chrome, Firefox, Safari, Edge</td>
+            </tr>
+        </table>
+        
+        <div class="subsection-title">5.2 Installation Steps (Optional)</div>
+        
+        <div class="step-box">
+            <div style="display: flex; align-items: center; margin-bottom: 10pt;">
+                <span class="step-number">1</span>
+                <strong>Download and Install XAMPP</strong>
+            </div>
+            <p>Download XAMPP from <code>https://www.apachefriends.org/</code></p>
+            <p>Install and start Apache and MySQL services</p>
+        </div>
+        
+        <div class="step-box">
+            <div style="display: flex; align-items: center; margin-bottom: 10pt;">
+                <span class="step-number">2</span>
+                <strong>Copy System Files</strong>
+            </div>
+            <p>Copy the 'eval' folder to your htdocs directory:</p>
+            <div class="code-block">C:\xampp\htdocs\eval\</div>
+        </div>
+        
+        <div class="step-box">
+            <div style="display: flex; align-items: center; margin-bottom: 10pt;">
+                <span class="step-number">3</span>
+                <strong>Database Setup</strong>
+            </div>
+            <p>1. Open phpMyAdmin: <code>http://localhost/phpmyadmin</code></p>
+            <p>2. Create new database: <code>faculty_evaluation</code></p>
+            <p>3. Import the provided SQL file</p>
+        </div>
+        
+        <div class="step-box">
+            <div style="display: flex; align-items: center; margin-bottom: 10pt;">
+                <span class="step-number">4</span>
+                <strong>Configuration</strong>
+            </div>
+            <p>Edit <code>db_connect.php</code> with your database credentials:</p>
+            <div class="code-block">
+$host = "localhost";<br>
+$username = "root";<br>
+$password = "";<br>
+$database = "evaluation_db";
+            </div>
+        </div>
+        
+        <div class="step-box">
+            <div style="display: flex; align-items: center; margin-bottom: 10pt;">
+                <span class="step-number">5</span>
+                <strong>Access the System</strong>
+            </div>
+            <p>Open your browser and navigate to:</p>
+            <div class="code-block">http://localhost/eval/</div>
+        </div>
+    </div>
+
+    <!-- User Interface Overview -->
+    <div class="section">
+        <div class="section-title">6. User Interface Overview</div>
+        
+        <div class="subsection-title">6.1 Main Login Page</div>
+        <p>The system provides three login options:</p>
+        <ul>
+            <li><strong>Administrator</strong> - Full system access</li>
+            <li><strong>Faculty</strong> - View evaluation results</li>
+            <li><strong>Student</strong> - Submit evaluations</li>
+        </ul>
+        
+        <div class="subsection-title">6.2 Dashboard Components</div>
+        <p>Each user type has a customized dashboard with relevant information:</p>
+        
+        <div class="step-box">
+            <strong>Admin Dashboard:</strong>
+            <ul>
+                <li>System statistics (Total Teachers, Students, Users, Sections)</li>
+                <li>Evaluation results chart</li>
+                <li>Completion rate donut chart</li>
+                <li>Evaluation trends graph</li>
+                <li>Academic calendar</li>
+            </ul>
+        </div>  
+        <div class="step-box">
+            <strong>Student Dashboard:</strong>
+            <ul>
+                <li>List of assigned teachers</li>
+                <li>Evaluation status</li>
+                <li>Submission deadlines</li>
+                <li>Evaluation history</li>
+            </ul>
+        </div>
+    </div>
+    <div class="section">
+        <div class="section-title">7. How To Guides</div>
+        
+        <div class="subsection-title">7.1 Administrator Guide</div>
+        
+        <div class="step-box">
+            <div style="display: flex; align-items: center; margin-bottom: 10pt;">
+                <span class="step-number">1</span>
+                <strong>Adding New Academic Year</strong>
+            </div>
+            <ol>
+                <li>Login to Admin Panel</li>
+                <li>Navigate to "Academic Year" menu</li>
+                <li>Click "Add New" button</li>
+                <li>Enter year (e.g., 2024-2025)</li>
+                <li>Select quarter (1st, 2nd, 3rd, 4th)</li>
+                <li>Set as default if needed</li>
+                <li>Click "Save"</li>
+            </ol>
+        </div>
+        
+        <div class="step-box">
+            <div style="display: flex; align-items: center; margin-bottom: 10pt;">
+                <span class="step-number">2</span>
+                <strong>Managing Faculty Members</strong>
+            </div>
+            <ol>
+                <li>Go to Admin Panel → Teachers</li>
+                <li>Click "Add New" for new Teachers</li>
+                <li>Fill required information:
+                    <ul>
+                        <li>Teachers ID</li>
+                        <li>First Name, Last Name</li>
+                        <li>Email Address</li>
+                        <li>Contact Number</li>
+                        <li>Department</li>
+                    </ul>
+                </li>
+                <li>Set password or use auto-generated</li>
+                <li>Save changes</li>
+            </ol>
+        </div>
+        
+        <div class="step-box">
+            <div style="display: flex; align-items: center; margin-bottom: 10pt;">
+                <span class="step-number">3</span>
+                <strong>Generating Reports</strong>
+            </div>
+            <ol>
+                <li>Navigate to "Evaluation Report"</li>
+                <li>Select Academic Year</li>
+                <li>Choose specific faculty or "All"</li>
+                <li>Set date range if needed</li>
+                <li>Click "Generate Report"</li>
+                <li>Download PDF when ready</li>
+            </ol>
+        </div>     
+        <div class="step-box">
+            <div style="display: flex; align-items: center; margin-bottom: 10pt;">
+                <span class="step-number">2</span>
+                <strong>Understanding Performance Analytics</strong>
+            </div>
+            <ul>
+                <li><strong>Overall Rating:</strong> Average of all evaluations</li>
+                <li><strong>Trend Analysis:</strong> Performance over time</li>
+                <li><strong>Subject Comparison:</strong> Ratings by subject taught</li>
+                <li><strong>Student Feedback:</strong> Constructive comments</li>
+            </ul>
+        </div>
+        
+        <div class="subsection-title">7.3 Student Guide</div>
+        
+        <div class="step-box">
+            <div style="display: flex; align-items: center; margin-bottom: 10pt;">
+                <span class="step-number">1</span>
+                <strong>Submitting Faculty Evaluation</strong>
+            </div>
+            <ol>
+                <li>Login to Student Portal</li>
+                <li>Click "Evaluate Faculty"</li>
+                <li>Select teacher from list</li>
+                <li>Rate each criteria (1-5 scale):
+                    <ul>
+                        <li>1 = Poor</li>
+                        <li>2 = Fair</li>
+                        <li>3 = Good</li>
+                        <li>4 = Very Good</li>
+                        <li>5 = Excellent</li>
+                    </ul>
+                </li>
+                <li>Provide constructive comments</li>
+                <li>Review responses</li>
+                <li>Submit evaluation</li>
+            </ol>
+        </div>
+        
+        <div class="warning-box">
+            <strong>⚠️ Evaluation Guidelines:</strong>
+            <ul>
+                <li>Be honest and fair in your ratings</li>
+                <li>Provide specific, constructive feedback</li>
+                <li>Focus on teaching effectiveness</li>
+                <li>Avoid personal attacks or inappropriate language</li>
+                <li>Submit evaluations before the deadline</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Troubleshooting Section -->
+    <div class="section">
+        <div class="section-title">8. Troubleshooting Section</div>
+        
+        <div class="subsection-title">8.1 Common Login Issues</div>
+        
+        <div class="step-box">
+            <strong>Problem:</strong> Cannot login / "Invalid credentials" error<br>
+            <strong>Solutions:</strong>
+            <ol>
+                <li>Verify username and password are correct</li>
+                <li>Check if account is active (contact admin)</li>
+                <li>Clear browser cache and cookies</li>
+                <li>Try different browser</li>
+                <li>Check internet connection</li>
+            </ol>
+        </div>
+        
+        <div class="subsection-title">8.2 System Performance Issues</div>
+        
+        <div class="step-box">
+            <strong>Problem:</strong> Pages loading slowly or not at all<br>
+            <strong>Solutions:</strong>
+            <ol>
+                <li>Check internet connection speed</li>
+                <li>Clear browser cache</li>
+                <li>Close unnecessary browser tabs</li>
+                <li>Restart browser</li>
+                <li>Contact IT support if problem persists</li>
+            </ol>
+        </div>
+        
+        <div class="subsection-title">8.3 Evaluation Submission Problems</div>
+        
+        <div class="step-box">
+            <strong>Problem:</strong> Cannot submit evaluation<br>
+            <strong>Solutions:</strong>
+            <ol>
+                <li>Ensure all required fields are completed</li>
+                <li>Check if evaluation period is still open</li>
+                <li>Verify you haven't already submitted for this faculty</li>
+                <li>Try refreshing the page</li>
+                <li>Contact admin if deadline has passed</li>
+            </ol>
+        </div>
+        
+        <div class="subsection-title">8.4 Report Generation Issues</div>
+        
+        <div class="step-box">
+            <strong>Problem:</strong> Reports not generating or downloading<br>
+            <strong>Solutions:</strong>
+            <ol>
+                <li>Ensure evaluation data exists for selected period</li>
+                <li>Check browser popup blocker settings</li>
+                <li>Try different browser</li>
+                <li>Clear browser cache</li>
+                <li>Contact admin for assistance</li>
+            </ol>
+        </div>
+        
+        <div class="warning-box">
+            <strong>🚨 Emergency Procedures:</strong>
+            <ul>
+                <li><strong>System Down:</strong> Contact IT immediately</li>
+                <li><strong>Data Loss:</strong> Report to admin for backup restoration</li>
+                <li><strong>Security Breach:</strong> Change passwords, notify admin</li>
+                <li><strong>Deadline Issues:</strong> Contact academic coordinator</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Contact Information Support -->
+    <div class="section">
+        <div class="section-title">9. Contact Information Support</div>
+            <div class="subsection-title">9.2 Emergency Contacts</div>
+        
+        <div class="info-box">
+            <strong>After Hours Support:</strong><br>
+            Phone: [Emergency Number]<br>
+            Email: [emergency@domain.com]<br><br>
+            
+            <strong>For Critical Issues:</strong><br>
+            • System completely down<br>
+            • Data corruption<br>
+            • Security breaches<br>
+            • Evaluation deadline emergencies
+        </div>
+    <!-- Appendices -->
+    <div class="section">
+        <div class="section-title">Appendices</div>
+        
+        <div class="subsection-title">Quick Reference Card</div>
+        
+        <div class="step-box">
+            <strong>System URLs:</strong><br>
+            • Main Login: <code>http://localhost/eval/</code><br>
+            • Admin Panel: <code>http://localhost/eval/admin/</code><br>
+            • Faculty Portal: <code>http://localhost/eval/faculty/</code><br>
+            • Student Portal: <code>http://localhost/eval/student/</code><br><br>
+            
+            <strong>Default Credentials:</strong><br>
+            • Admin: admin / admin123<br><br>
+            
+            <strong>Emergency Restart:</strong><br>
+            1. Stop XAMPP services<br>
+            2. Start Apache and MySQL<br>
+            3. Clear browser cache<br>
+            4. Access system
+        </div>
+        
+        <div class="subsection-title">Emergency Procedures</div>
+        
+        <div class="step-box">
+            <strong>System Recovery Steps:</strong>
+            <ol>
+                <li>Check XAMPP Control Panel</li>
+                <li>Restart Apache and MySQL services</li>
+                <li>Check database connection</li>
+                <li>Verify file permissions</li>
+                <li>Clear temporary files</li>
+                <li>Test system access</li>
+                <li>Contact support if issues persist</li>
+            </ol>
+        </div>
+        
+        <div class="subsection-title">System Specifications</div>
+        
+        <table>
+            <tr>
+                <th>Component</th>
+                <th>Details</th>
+            </tr>
+            <tr>
+                <td>System Type</td>
+                <td>Web-based Application</td>
+            </tr>
+            <tr>
+                <td>Frontend</td>
+                <td>HTML5, CSS3, JavaScript, Bootstrap 4</td>
+            </tr>
+            <tr>
+                <td>Backend</td>
+                <td>PHP 7.4+, MySQLi</td>
+            </tr>
+            <tr>
+                <td>Database</td>
+                <td>MySQL 5.7+ / MariaDB 10.4+</td>
+            </tr>
+            <tr>
+                <td>Charts</td>
+                <td>Chart.js Library</td>
+            </tr>
+            <tr>
+                <td>Icons</td>
+                <td>Font Awesome 5.15+</td>
+            </tr>
+            <tr>
+                <td>Responsive</td>
+                <td>Mobile-friendly design</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Print Instructions -->
+    <div class="no-print" style="position: fixed; top: 20px; right: 20px; background: #800000; color: white; padding: 15px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+        <h4 style="margin: 0 0 10px 0;">📖 Print Instructions</h4>
+        <p style="margin: 0; font-size: 12px;">
+            1. Press <strong>Ctrl+P</strong> to print<br>
+            2. Select "More settings"<br>
+            3. Check "Headers and footers"<br>
+            4. Set margins to "Minimum"<br>
+            5. Print double-sided if available
+        </p>
+    </div>
+    <script>
+        // Add page numbers when printing
+        window.addEventListener('beforeprint', function() {
+            const pageNumber = document.getElementById('page-number');
+            if (pageNumber) {
+                pageNumber.textContent = '1';
+            }
+        });
+    </script>
+</body>
+</html>
